@@ -47,7 +47,7 @@
         .mode-btn {
             padding: 8px 16px;
             background-color: #282828;
-            border: none;
+            border: 2px solid #3e332c00;
             color: white;
             border-radius: 20px;
             font-size: 0.9rem;
@@ -56,7 +56,8 @@
         }
 
         .mode-btn.active {
-            background-color: #00b4d8;
+            /* background-color: #00b4d8; */
+            border: 2px solid #c3561b;
         }
 
         .breathing-circle {
@@ -68,11 +69,16 @@
             align-items: center;
             justify-content: center;
             transition: all 0.5s ease-in-out;
-            background-color: #00b4d80f;
-            border: 15px solid #00b4d8;
-            box-shadow: 0 0 30px rgba(0, 180, 216, 0.5);
+            /* background-color: #00b4d80f; */
+            /* border: 15px solid #00b4d8; */
+            /* box-shadow: 0 0 30px rgba(0, 180, 216, 0.5); */
             cursor: pointer;
             position: relative;
+
+            background-image: url('breathing-circle-fire.png');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
         }
 
         .timer {
@@ -504,7 +510,7 @@
         function setCircleColor(color) {
             currentColor = color;
             breathingCircle.style.borderColor = color;
-            breathingCircle.style.boxShadow = `0 0 30px ${color}80`;
+            // breathingCircle.style.boxShadow = `0 0 30px ${color}80`;
             saveSettings();
         }
 
