@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -45,7 +46,7 @@
 
         .mode-btn {
             padding: 8px 16px;
-            background-color: #1a1a1a;
+            background-color: #282828;
             border: none;
             color: white;
             border-radius: 20px;
@@ -84,7 +85,7 @@
         .hint {
             font-size: 1.5rem;
             margin-top: 45px;
-            margin-bottom: 5px;
+            margin-bottom: 25px;
             min-height: 36px;
             transition: opacity 0.3s ease;
             text-align: center;
@@ -108,7 +109,7 @@
             width: 60px;
             height: 60px;
             border-radius: 50%;
-            background-color: #1a1a1a;
+            background-color: #282828;
             border: none;
             color: white;
             display: flex;
@@ -134,7 +135,7 @@
         }
 
         .settings-panel {
-            background-color: #1a1a1a;
+            background-color: #282828;
             border-radius: 15px;
             padding: 15px;
             margin-top: 10px;
@@ -149,7 +150,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: #1a1a1a;
+            background-color: #282828;
             padding: 10px 20px;
             border-radius: 30px;
             cursor: pointer;
@@ -233,11 +234,11 @@
             border-radius: 50%;
         }
 
-        input:checked + .slider {
+        input:checked+.slider {
             background-color: #00b4d8;
         }
 
-        input:checked + .slider:before {
+        input:checked+.slider:before {
             transform: translateX(24px);
         }
 
@@ -261,22 +262,24 @@
         }
 
         @keyframes breatheIn {
-            0% { 
+            0% {
                 transform: scale(1);
                 /*border-width: 15px;*/
             }
-            100% { 
+
+            100% {
                 transform: scale(1.5);
                 /*border-width: 18px;*/
             }
         }
 
         @keyframes breatheOut {
-            0% { 
+            0% {
                 transform: scale(1.5);
                 /*border-width: 18px;*/
             }
-            100% { 
+
+            100% {
                 transform: scale(1);
                 /*border-width: 15px;*/
             }
@@ -287,20 +290,20 @@
             .container {
                 max-width: 100%;
             }
-            
+
             .breathing-circle {
                 width: 180px;
                 height: 180px;
             }
-            
+
             .timer {
                 font-size: 2rem;
             }
-            
+
             .hint {
                 font-size: 1.3rem;
             }
-            
+
             .mode-btn {
                 font-size: 0.85rem;
                 padding: 7px 14px;
@@ -312,21 +315,21 @@
                 width: 150px;
                 height: 150px;
             }
-            
+
             .timer {
                 font-size: 1.8rem;
             }
-            
+
             .hint {
                 font-size: 1.2rem;
             }
-            
+
             .control-btn {
                 width: 50px;
                 height: 50px;
                 font-size: 1.3rem;
             }
-            
+
             .mode-btn {
                 font-size: 0.8rem;
                 padding: 6px 12px;
@@ -334,6 +337,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="mode-selector" id="modeSelector">
@@ -341,13 +345,13 @@
             <button class="mode-btn" data-mode="concentration">Концентрация</button>
             <button class="mode-btn" data-mode="balance">Баланс</button>
         </div>
-        
+
         <div class="breathing-circle" id="breathingCircle">
-            <div class="timer" id="timer">04:00</div>
+            <!--div class="timer" id="timer">04:00</div-->
         </div>
         <div class="hint" id="hint">Готовы начать?</div>
-        <div class="sub-hint" id="subHint"></div>
-        
+        <div style="display:none" class="sub-hint" id="subHint"></div>
+
         <div class="controls">
             <button class="control-btn" id="playPauseBtn">
                 <i class="fas fa-play"></i>
@@ -356,22 +360,27 @@
                 <i class="fas fa-stop"></i>
             </button>
         </div>
-        
+
         <div class="settings">
             <div class="settings-toggle" id="settingsToggle">
                 <i class="fas fa-cog"></i>
                 <span style="margin-left: 10px;">Настройки</span>
             </div>
-            
+
             <div class="settings-panel" id="settingsPanel">
                 <div class="color-palette" id="colorPalette">
-                    <div class="color-option active" style="background-color: #00b4d8; border-color: #00b4d8;" data-color="#00b4d8"></div>
-                    <div class="color-option" style="background-color: #ff9e00; border-color: #ff9e00;" data-color="#ff9e00"></div>
-                    <div class="color-option" style="background-color: #c77dff; border-color: #c77dff;" data-color="#c77dff"></div>
-                    <div class="color-option" style="background-color: #38b000; border-color: #38b000;" data-color="#38b000"></div>
-                    <div class="color-option" style="background-color: #ff5400; border-color: #ff5400;" data-color="#ff5400"></div>
+                    <div class="color-option active" style="background-color: #00b4d8; border-color: #00b4d8;"
+                        data-color="#00b4d8"></div>
+                    <div class="color-option" style="background-color: #ff9e00; border-color: #ff9e00;"
+                        data-color="#ff9e00"></div>
+                    <div class="color-option" style="background-color: #c77dff; border-color: #c77dff;"
+                        data-color="#c77dff"></div>
+                    <div class="color-option" style="background-color: #38b000; border-color: #38b000;"
+                        data-color="#38b000"></div>
+                    <div class="color-option" style="background-color: #ff5400; border-color: #ff5400;"
+                        data-color="#ff5400"></div>
                 </div>
-                
+
                 <div class="music-toggle">
                     <div class="toggle-label">
                         <i class="fas fa-music"></i>
@@ -388,7 +397,7 @@
 
     <audio id="backgroundMusic" loop>
         <!-- В реальном приложении замените на свой Ambient-трек -->
-        <source src="https://assets.mixkit.co/music/preview/mixkit-ambient-relax-382.mp3" type="audio/mpeg">
+        <source src="ambient.mp3" type="audio/mp3">
     </audio>
 
     <script>
@@ -396,7 +405,7 @@
 
         // Элементы DOM
         const breathingCircle = document.getElementById('breathingCircle');
-        const timerElement = document.getElementById('timer');
+        // const timerElement = document.getElementById('timer');
         const hintElement = document.getElementById('hint');
         const subHintElement = document.getElementById('subHint');
         const playPauseBtn = document.getElementById('playPauseBtn');
@@ -455,7 +464,7 @@
             const savedColor = localStorage.getItem('breathingAppColor');
             const savedMusic = localStorage.getItem('breathingAppMusic');
             const savedMode = localStorage.getItem('breathingAppMode');
-            
+
             if (savedColor) {
                 setCircleColor(savedColor);
                 document.querySelectorAll('.color-option').forEach(option => {
@@ -466,12 +475,12 @@
                     }
                 });
             }
-            
+
             if (savedMusic === 'true') {
                 musicToggle.checked = true;
                 backgroundMusic.play().catch(e => console.log("Автовоспроизведение заблокировано"));
             }
-            
+
             if (savedMode && modes[savedMode]) {
                 setMode(savedMode);
                 document.querySelectorAll('.mode-btn').forEach(btn => {
@@ -522,19 +531,19 @@
 
         // Обновление таймера
         function updateTimer() {
-            timerElement.textContent = formatTime(timeLeft);
-            
+            //timerElement.textContent = formatTime(timeLeft);
+
             if (timeLeft <= 0) {
                 // Переход к следующей фазе
                 const mode = modes[currentMode];
                 const currentPhaseIndex = mode.phases.findIndex(phase => phase.name === currentPhase);
                 const nextPhaseIndex = (currentPhaseIndex + 1) % mode.phases.length;
                 const nextPhase = mode.phases[nextPhaseIndex];
-                
+
                 currentPhase = nextPhase.name;
                 timeLeft = nextPhase.duration;
                 hintElement.textContent = nextPhase.hint;
-                
+
                 // Особые действия для режима баланса
                 if (currentMode === 'balance') {
                     if (currentPhase === 'breathe-in') {
@@ -546,7 +555,7 @@
                 } else {
                     subHintElement.textContent = nextPhase.subHint;
                 }
-                
+
                 // Применяем анимацию
                 applyPhaseAnimation(currentPhase, nextPhase.duration);
             } else {
@@ -557,14 +566,14 @@
         // Применение анимации для фазы
         function applyPhaseAnimation(phase, duration) {
             breathingCircle.className = 'breathing-circle';
-            
+
             // Сбрасываем предыдущие анимации
             if (animationTimer) {
                 clearTimeout(animationTimer);
             }
-            
+
             // Устанавливаем новую анимацию
-            switch(phase) {
+            switch (phase) {
                 case 'breathe-in':
                     breathingCircle.classList.add('breathe-in');
                     break;
@@ -581,7 +590,7 @@
                     breathingCircle.classList.add('pause');
                     break;
             }
-            
+
             // Запускаем таймер для следующего обновления
             if (isPlaying) {
                 animationTimer = setTimeout(() => {
@@ -605,22 +614,22 @@
                     currentPhase = mode.phases[0].name;
                     timeLeft = mode.phases[0].duration;
                     hintElement.textContent = mode.phases[0].hint;
-                    
+
                     if (currentMode === 'balance') {
                         balanceSide = 'left';
                         subHintElement.textContent = 'Левая ноздря';
                     } else {
                         subHintElement.textContent = mode.phases[0].subHint;
                     }
-                    
+
                     applyPhaseAnimation(currentPhase, mode.phases[0].duration);
                 }
-                
+
                 timerInterval = setInterval(updateTimer, 1000);
                 playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
                 breathingCircle.style.animationPlayState = 'running';
             }
-            
+
             isPlaying = !isPlaying;
         }
 
@@ -633,7 +642,7 @@
             isPlaying = false;
             currentPhase = 'pause';
             timeLeft = 0;
-            timerElement.textContent = formatTime(timeLeft);
+            //timerElement.textContent = formatTime(timeLeft);
             hintElement.textContent = 'Готовы начать?';
             breathingCircle.className = 'breathing-circle pause';
             playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
@@ -649,20 +658,20 @@
         function initApp() {
             // Загрузка сохраненных настроек
             loadSettings();
-            
+
             // Установка начального состояния
             resetTimer();
-            
+
             // Обработчики событий
             playPauseBtn.addEventListener('click', toggleTimer);
             stopBtn.addEventListener('click', resetTimer);
-            
+
             // Обработчик для клика по кругу
             breathingCircle.addEventListener('click', toggleTimer);
-            
+
             // Обработчики для выбора цвета
             colorPalette.querySelectorAll('.color-option').forEach(option => {
-                option.addEventListener('click', function() {
+                option.addEventListener('click', function () {
                     document.querySelectorAll('.color-option').forEach(opt => {
                         opt.classList.remove('active');
                     });
@@ -670,10 +679,10 @@
                     setCircleColor(this.getAttribute('data-color'));
                 });
             });
-            
+
             // Обработчики для выбора режима
             modeSelector.querySelectorAll('.mode-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
+                btn.addEventListener('click', function () {
                     document.querySelectorAll('.mode-btn').forEach(b => {
                         b.classList.remove('active');
                     });
@@ -681,9 +690,9 @@
                     setMode(this.getAttribute('data-mode'));
                 });
             });
-            
+
             // Обработчик для переключателя музыки
-            musicToggle.addEventListener('change', function() {
+            musicToggle.addEventListener('change', function () {
                 if (this.checked) {
                     backgroundMusic.play().catch(e => console.log("Автовоспроизведение заблокировано"));
                 } else {
@@ -691,12 +700,12 @@
                 }
                 saveSettings();
             });
-            
+
             // Обработчик для кнопки настроек
             settingsToggle.addEventListener('click', toggleSettings);
-            
+
             // Обработчик для сброса при завершении цикла музыки
-            backgroundMusic.addEventListener('ended', function() {
+            backgroundMusic.addEventListener('ended', function () {
                 this.currentTime = 0;
                 this.play();
             });
@@ -706,4 +715,5 @@
         document.addEventListener('DOMContentLoaded', initApp);
     </script>
 </body>
+
 </html>
