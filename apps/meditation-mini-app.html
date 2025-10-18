@@ -17,7 +17,7 @@
         :root {
             --primary-color: #c3561b;
             --primary-color-rgb: 195, 86, 27;
-            --btn-border-color:#cacaca;
+            --btn-border-color: #cacaca;
         }
 
         body {
@@ -45,7 +45,7 @@
         .mode-selector {
             display: flex;
             gap: 10px;
-            margin-bottom: 50px;
+            margin-bottom: 4vh;
             flex-wrap: wrap;
             justify-content: center;
         }
@@ -69,7 +69,7 @@
             width: 200px;
             height: 200px;
             border-radius: 50%;
-            margin: 10px 0;
+            margin: 5.5vh 0;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -92,8 +92,8 @@
 
         .hint {
             font-size: 1.5rem;
-            margin-top: 45px;
-            margin-bottom: 25px;
+            margin-top: 1vh;
+            margin-bottom: 2.5vh;
             min-height: 36px;
             transition: opacity 0.3s ease;
             text-align: center;
@@ -110,7 +110,7 @@
         .controls {
             display: flex;
             gap: 20px;
-            margin-bottom: 25px;
+            margin-bottom: 1vh;
         }
 
         .control-btn {
@@ -136,7 +136,7 @@
         .settings {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            /* gap: 15px; */
             width: 100%;
             max-width: 300px;
             margin-top: 10px;
@@ -270,11 +270,11 @@
             border-radius: 50%;
         }
 
-        input:checked + .slider {
+        input:checked+.slider {
             background-color: var(--primary-color);
         }
 
-        input:checked + .slider:before {
+        input:checked+.slider:before {
             transform: translateX(24px);
         }
 
@@ -285,17 +285,46 @@
             text-align: center;
         }
 
+        /* Индикаторы для режима баланса */
+        .balance-indicators {
+            display: flex;
+            justify-content: space-between;
+            width: 80%;
+            height: 3vh;
+            margin: 1vh 0;
+        }
+
+        .balance-indicator {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid var(--btn-border-color);
+            transition: all 0.3s ease;
+        }
+
+        .balance-indicator.active {
+            background-color: var(--btn-border-color);
+        }
+
         /* Анимации для дыхания */
         .breathing-circle.breathe-in {
             animation: breatheIn 4s ease-in-out forwards;
         }
 
         .breathing-circle.hold {
-            transform: scale(1.5);
+            transform: scale(1.9);
         }
 
-        .breathing-circle.breathe-out {
+        .breathing-circle.breathe-out-4s {
+            animation: breatheOut 4s ease-in-out forwards;
+        }
+
+        .breathing-circle.breathe-out-6s {
             animation: breatheOut 6s ease-in-out forwards;
+        }
+        
+        .breathing-circle.breathe-out-8s {
+            animation: breatheOut 8s ease-in-out forwards;
         }
 
         .breathing-circle.pause {
@@ -308,13 +337,13 @@
             }
 
             100% {
-                transform: scale(1.5);
+                transform: scale(1.9);
             }
         }
 
         @keyframes breatheOut {
             0% {
-                transform: scale(1.5);
+                transform: scale(1.9);
             }
 
             100% {
@@ -324,6 +353,10 @@
 
         /* Адаптивность */
         @media (max-width: 768px) {
+            .mode-selector {
+                margin-bottom: 1vh;
+            }
+
             .container {
                 max-width: 100%;
             }
@@ -346,7 +379,8 @@
                 padding: 7px 14px;
             }
 
-            .sprite-option, .color-option {
+            .sprite-option,
+            .color-option {
                 width: 30px;
                 height: 30px;
             }
@@ -377,7 +411,8 @@
                 padding: 6px 12px;
             }
 
-            .sprite-option, .color-option {
+            .sprite-option,
+            .color-option {
                 width: 28px;
                 height: 28px;
             }
@@ -396,8 +431,12 @@
         <div class="breathing-circle" id="breathingCircle">
             <!--div class="timer" id="timer">04:00</div-->
         </div>
+        <div class="balance-indicators" id="balanceIndicators">
+            <div class="balance-indicator left" id="leftIndicator"></div>
+            <div style="display:none" class="sub-hint" id="subHint"></div>
+            <div class="balance-indicator right" id="rightIndicator"></div>
+        </div>
         <div class="hint" id="hint">Готовы начать?</div>
-        <div style="display:none" class="sub-hint" id="subHint"></div>
 
         <div class="controls">
             <button class="control-btn" id="playPauseBtn">
@@ -425,7 +464,7 @@
                     <div class="sprite-option" data-sprite="light" style="background-image: url('breathing-circle-heart.png')"></div>
                     <div class="sprite-option" data-sprite="dark" style="background-image: url('breathing-circle-enalion.png')"></div>
                 </div>
-                
+
                 <div class="settings-label">Цвет</div>
                 <div class="color-palette" id="colorPalette">
                     <div class="color-option active" data-hue="0" style="filter: hue-rotate(0deg)"></div>
@@ -456,7 +495,7 @@
     </audio>
 
     <script>
-                                                // v1.4.0 - Дыхательное приложение с выбором спрайтов и цветов
+                            // v1.5.0 - Дыхательное приложение с исправлениями для режима баланса
 
         // Элементы DOM
         const breathingCircle = document.getElementById('breathingCircle');
@@ -464,13 +503,16 @@
         const subHintElement = document.getElementById('subHint');
         const playPauseBtn = document.getElementById('playPauseBtn');
         const stopBtn = document.getElementById('stopBtn');
-                                                const spriteSelector = document.getElementById('spriteSelector');
-                                                const colorPalette = document.getElementById('colorPalette');
+                            const spriteSelector = document.getElementById('spriteSelector');
+                            const colorPalette = document.getElementById('colorPalette');
         const musicToggle = document.getElementById('musicToggle');
         const backgroundMusic = document.getElementById('backgroundMusic');
         const modeSelector = document.getElementById('modeSelector');
         const settingsToggle = document.getElementById('settingsToggle');
         const settingsPanel = document.getElementById('settingsPanel');
+                            const balanceIndicators = document.getElementById('balanceIndicators');
+                            const leftIndicator = document.getElementById('leftIndicator');
+                            const rightIndicator = document.getElementById('rightIndicator');
 
         // Состояние приложения
         let isPlaying = false;
@@ -478,7 +520,7 @@
         let timeLeft = 0;
         let timerInterval = null;
         let currentHue = 0;
-                                                let currentSprite = 'fire';
+                            let currentSprite = 'fire';
         let currentMode = 'relaxation';
         let balanceSide = 'left';
         let animationTimer = null;
@@ -510,7 +552,7 @@
                 phases: [
                     { name: 'breathe-in', duration: 4, hint: 'Вдох', subHint: '' },
                     { name: 'hold', duration: 7, hint: 'Задержи дыхание', subHint: '' },
-                    { name: 'breathe-out', duration: 8, hint: 'Выдох', subHint: '' }
+                    { name: 'breathe-out-8s', duration: 8, hint: 'Выдох', subHint: '' }
                 ],
                 description: '4-7-8 (пранаяма) для расслабления и сна'
             },
@@ -519,7 +561,7 @@
                 phases: [
                     { name: 'breathe-in', duration: 4, hint: 'Вдох', subHint: '' },
                     { name: 'hold', duration: 4, hint: 'Задержи дыхание', subHint: '' },
-                    { name: 'breathe-out', duration: 4, hint: 'Выдох', subHint: '' },
+                    { name: 'breathe-out-4s', duration: 4, hint: 'Выдох', subHint: '' },
                     { name: 'pause', duration: 4, hint: 'Пауза', subHint: '' }
                 ],
                 description: 'Квадратное дыхание 4-4-4-4 для фокуса'
@@ -528,7 +570,7 @@
                 name: 'Баланс',
                 phases: [
                     { name: 'breathe-in', duration: 4, hint: 'Вдох', subHint: 'Левая ноздря' },
-                    { name: 'breathe-out', duration: 4, hint: 'Выдох', subHint: 'Правая ноздря' },
+                    { name: 'breathe-out-4s', duration: 4, hint: 'Выдох', subHint: 'Правая ноздря' },
                     { name: 'switch', duration: 2, hint: 'Сменить сторону', subHint: '' }
                 ],
                 description: 'Попеременное дыхание для гармонии'
@@ -611,14 +653,14 @@
         // Установка hue-фильтра и цвета интерфейса
         function setSpriteHue(hue) {
             currentHue = hue;
-            
+
             // Применяем фильтр к кругу
             breathingCircle.style.filter = `hue-rotate(${hue}deg)`;
-            
+
             // Обновляем CSS переменные для цвета интерфейса
             const primaryColor = hueColors[hue] || '#c3561b';
             document.documentElement.style.setProperty('--primary-color', primaryColor);
-            
+
             // Сохраняем настройки
             saveSettings();
         }
@@ -627,14 +669,41 @@
         function setMode(mode) {
             currentMode = mode;
             resetTimer();
-            updateModeDescription();
+            updateModeVisibility();
             saveSettings();
         }
 
-        // Обновление описания режима
-        function updateModeDescription() {
-            const mode = modes[currentMode];
-            subHintElement.textContent = mode.description;
+                            // Обновление видимости элементов в зависимости от режима
+                            function updateModeVisibility() {
+                                if (currentMode === 'balance') {
+                                    balanceIndicators.style.display = 'flex';
+                                    subHintElement.style.display = 'block';
+                                } else {
+                                    balanceIndicators.style.display = 'none';
+                                    subHintElement.style.display = 'none';
+                                }
+                            }
+
+                            // Обновление индикаторов для режима баланса
+                            function updateBalanceIndicators() {
+                                if (currentMode !== 'balance') return;
+
+                            leftIndicator.classList.remove('active');
+                            rightIndicator.classList.remove('active');
+
+                            if (currentPhase === 'breathe-in') {
+                                if (balanceSide === 'left') {
+                                    leftIndicator.classList.add('active');
+                                } else {
+                                    rightIndicator.classList.add('active');
+                                }
+                        } else if (currentPhase.startsWith('breathe-out')) {
+                            if (balanceSide === 'left') {
+                                rightIndicator.classList.add('active');
+                            } else {
+                                leftIndicator.classList.add('active');
+                            }
+                        }
         }
 
         // Форматирование времени в ММ:СС
@@ -646,6 +715,7 @@
 
         // Обновление таймера
         function updateTimer() {
+            console.log(formatTime(timeLeft));
             if (timeLeft <= 0) {
                 // Переход к следующей фазе
                 const mode = modes[currentMode];
@@ -654,7 +724,7 @@
                 const nextPhase = mode.phases[nextPhaseIndex];
 
                 currentPhase = nextPhase.name;
-                timeLeft = nextPhase.duration;
+                timeLeft = nextPhase.duration - 1;
                 hintElement.textContent = nextPhase.hint;
 
                 // Особые действия для режима баланса
@@ -662,9 +732,12 @@
                     if (currentPhase === 'breathe-in') {
                         balanceSide = balanceSide === 'left' ? 'right' : 'left';
                         subHintElement.textContent = balanceSide === 'left' ? 'Левая ноздря' : 'Правая ноздря';
+                    } else if (currentPhase.startsWith('breathe-out')) {
+                        subHintElement.textContent = balanceSide === 'left' ? 'Правая ноздря' : 'Левая ноздря';
                     } else if (currentPhase === 'switch') {
                         subHintElement.textContent = '';
                     }
+                    updateBalanceIndicators();
                 } else {
                     subHintElement.textContent = nextPhase.subHint;
                 }
@@ -693,8 +766,14 @@
                 case 'hold':
                     breathingCircle.classList.add('hold');
                     break;
-                case 'breathe-out':
-                    breathingCircle.classList.add('breathe-out');
+                case 'breathe-out-4s':
+                    breathingCircle.classList.add('breathe-out-4s');
+                    break;
+                case 'breathe-out-6s':
+                    breathingCircle.classList.add('breathe-out-6s');
+                    break;
+                case 'breathe-out-8s':
+                    breathingCircle.classList.add('breathe-out-8s');
                     break;
                 case 'pause':
                     breathingCircle.classList.add('pause');
@@ -731,6 +810,7 @@
                     if (currentMode === 'balance') {
                         balanceSide = 'left';
                         subHintElement.textContent = 'Левая ноздря';
+                        updateBalanceIndicators();
                     } else {
                         subHintElement.textContent = mode.phases[0].subHint;
                     }
@@ -758,7 +838,15 @@
             hintElement.textContent = 'Готовы начать?';
             breathingCircle.className = 'breathing-circle pause';
             playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
-            updateModeDescription();
+
+            if (currentMode === 'balance') {
+                subHintElement.textContent = 'Левая ноздря';
+                updateBalanceIndicators();
+            } else {
+                subHintElement.textContent = '';
+            }
+
+            updateModeVisibility();
         }
 
         // Переключение панели настроек
