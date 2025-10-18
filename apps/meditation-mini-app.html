@@ -14,6 +14,12 @@
             user-select: none;
         }
 
+        :root {
+            --primary-color: #c3561b;
+            --primary-color-rgb: 195, 86, 27;
+            --btn-border-color:#cacaca;
+        }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
             background-color: #0f0f0f;
@@ -56,8 +62,7 @@
         }
 
         .mode-btn.active {
-            /* background-color: #00b4d8; */
-            border: 2px solid #c3561b;
+            border: 2px solid var(--btn-border-color);
         }
 
         .breathing-circle {
@@ -69,16 +74,13 @@
             align-items: center;
             justify-content: center;
             transition: all 0.5s ease-in-out;
-            /* background-color: #00b4d80f; */
-            /* border: 15px solid #00b4d8; */
-            /* box-shadow: 0 0 30px rgba(0, 180, 216, 0.5); */
             cursor: pointer;
             position: relative;
-
             background-image: url('breathing-circle-fire.png');
             background-repeat: no-repeat;
             background-position: center;
             background-size: contain;
+            filter: hue-rotate(0deg);
         }
 
         .timer {
@@ -167,6 +169,30 @@
             background-color: #2a2a2a;
         }
 
+        .sprite-selector {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .sprite-option {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: transform 0.2s ease;
+            background-image: url('breathing-circle-fire.png');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+        }
+
+        .sprite-option.active {
+            border-color: white;
+            transform: scale(1.1);
+        }
+
         .color-palette {
             display: flex;
             justify-content: space-between;
@@ -180,6 +206,10 @@
             cursor: pointer;
             border: 3px solid transparent;
             transition: transform 0.2s ease;
+            background-image: url('breathing-circle-fire.png');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
         }
 
         .color-option.active {
@@ -240,12 +270,19 @@
             border-radius: 50%;
         }
 
-        input:checked+.slider {
-            background-color: #00b4d8;
+        input:checked + .slider {
+            background-color: var(--primary-color);
         }
 
-        input:checked+.slider:before {
+        input:checked + .slider:before {
             transform: translateX(24px);
+        }
+
+        .settings-label {
+            font-size: 0.9rem;
+            color: #aaa;
+            margin-bottom: 8px;
+            text-align: center;
         }
 
         /* Анимации для дыхания */
@@ -255,7 +292,6 @@
 
         .breathing-circle.hold {
             transform: scale(1.5);
-            /*border-width: 20px;*/
         }
 
         .breathing-circle.breathe-out {
@@ -264,30 +300,25 @@
 
         .breathing-circle.pause {
             transform: scale(1);
-            /*border-width: 15px;*/
         }
 
         @keyframes breatheIn {
             0% {
                 transform: scale(1);
-                /*border-width: 15px;*/
             }
 
             100% {
                 transform: scale(1.5);
-                /*border-width: 18px;*/
             }
         }
 
         @keyframes breatheOut {
             0% {
                 transform: scale(1.5);
-                /*border-width: 18px;*/
             }
 
             100% {
                 transform: scale(1);
-                /*border-width: 15px;*/
             }
         }
 
@@ -314,6 +345,11 @@
                 font-size: 0.85rem;
                 padding: 7px 14px;
             }
+
+            .sprite-option, .color-option {
+                width: 30px;
+                height: 30px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -339,6 +375,11 @@
             .mode-btn {
                 font-size: 0.8rem;
                 padding: 6px 12px;
+            }
+
+            .sprite-option, .color-option {
+                width: 28px;
+                height: 28px;
             }
         }
     </style>
@@ -374,17 +415,25 @@
             </div>
 
             <div class="settings-panel" id="settingsPanel">
+                <div class="settings-label">Изображение</div>
+                <div class="sprite-selector" id="spriteSelector">
+                    <div class="sprite-option active" data-sprite="fire" style="background-image: url('breathing-circle-fire.png')">
+                    </div>
+                    <div class="sprite-option" data-sprite="water" style="background-image: url('breathing-circle-water.png')"></div>
+                    <div class="sprite-option" data-sprite="earth" style="background-image: url('breathing-circle-flower.png')"></div>
+                    <div class="sprite-option" data-sprite="air" style="background-image: url('breathing-circle-calm.png')"></div>
+                    <div class="sprite-option" data-sprite="light" style="background-image: url('breathing-circle-heart.png')"></div>
+                    <div class="sprite-option" data-sprite="dark" style="background-image: url('breathing-circle-enalion.png')"></div>
+                </div>
+                
+                <div class="settings-label">Цвет</div>
                 <div class="color-palette" id="colorPalette">
-                    <div class="color-option active" style="background-color: #00b4d8; border-color: #00b4d8;"
-                        data-color="#00b4d8"></div>
-                    <div class="color-option" style="background-color: #ff9e00; border-color: #ff9e00;"
-                        data-color="#ff9e00"></div>
-                    <div class="color-option" style="background-color: #c77dff; border-color: #c77dff;"
-                        data-color="#c77dff"></div>
-                    <div class="color-option" style="background-color: #38b000; border-color: #38b000;"
-                        data-color="#38b000"></div>
-                    <div class="color-option" style="background-color: #ff5400; border-color: #ff5400;"
-                        data-color="#ff5400"></div>
+                    <div class="color-option active" data-hue="0" style="filter: hue-rotate(0deg)"></div>
+                    <div class="color-option" data-hue="60" style="filter: hue-rotate(60deg)"></div>
+                    <div class="color-option" data-hue="120" style="filter: hue-rotate(120deg)"></div>
+                    <div class="color-option" data-hue="180" style="filter: hue-rotate(180deg)"></div>
+                    <div class="color-option" data-hue="240" style="filter: hue-rotate(240deg)"></div>
+                    <div class="color-option" data-hue="300" style="filter: hue-rotate(300deg)"></div>
                 </div>
 
                 <div class="music-toggle">
@@ -407,16 +456,16 @@
     </audio>
 
     <script>
-        // v1.2.0 - Дыхательное приложение для Telegram с улучшениями
+                                                // v1.4.0 - Дыхательное приложение с выбором спрайтов и цветов
 
         // Элементы DOM
         const breathingCircle = document.getElementById('breathingCircle');
-        // const timerElement = document.getElementById('timer');
         const hintElement = document.getElementById('hint');
         const subHintElement = document.getElementById('subHint');
         const playPauseBtn = document.getElementById('playPauseBtn');
         const stopBtn = document.getElementById('stopBtn');
-        const colorPalette = document.getElementById('colorPalette');
+                                                const spriteSelector = document.getElementById('spriteSelector');
+                                                const colorPalette = document.getElementById('colorPalette');
         const musicToggle = document.getElementById('musicToggle');
         const backgroundMusic = document.getElementById('backgroundMusic');
         const modeSelector = document.getElementById('modeSelector');
@@ -428,10 +477,31 @@
         let currentPhase = 'pause';
         let timeLeft = 0;
         let timerInterval = null;
-        let currentColor = '#00b4d8';
+        let currentHue = 0;
+                                                let currentSprite = 'fire';
         let currentMode = 'relaxation';
         let balanceSide = 'left';
         let animationTimer = null;
+
+        // Цвета для разных hue-значений
+        const hueColors = {
+            0: '#c3561b',   // Оранжево-красный
+            60: '#d8c21b',  // Желтый
+            120: '#38b000', // Зеленый
+            180: '#00b4d8', // Голубой
+            240: '#c77dff', // Фиолетовый
+            300: '#ff6bcf'  // Розовый
+        };
+
+                    // Спрайты (все используют одну картинку, но можно заменить на разные)
+                    const sprites = {
+                        fire: 'breathing-circle-fire.png',
+                        water: 'breathing-circle-water.png',
+                        earth: 'breathing-circle-flower.png',
+                        air: 'breathing-circle-calm.png',
+                        light: 'breathing-circle-heart.png',
+                        dark: 'breathing-circle-enalion.png'
+                    };
 
         // Режимы дыхания
         const modes = {
@@ -467,14 +537,26 @@
 
         // Загрузка сохраненных настроек
         function loadSettings() {
-            const savedColor = localStorage.getItem('breathingAppColor');
+            const savedHue = localStorage.getItem('breathingAppHue');
+            const savedSprite = localStorage.getItem('breathingAppSprite');
             const savedMusic = localStorage.getItem('breathingAppMusic');
             const savedMode = localStorage.getItem('breathingAppMode');
 
-            if (savedColor) {
-                setCircleColor(savedColor);
+            if (savedHue) {
+                setSpriteHue(parseInt(savedHue));
                 document.querySelectorAll('.color-option').forEach(option => {
-                    if (option.getAttribute('data-color') === savedColor) {
+                    if (parseInt(option.getAttribute('data-hue')) === parseInt(savedHue)) {
+                        option.classList.add('active');
+                    } else {
+                        option.classList.remove('active');
+                    }
+                });
+            }
+
+            if (savedSprite && sprites[savedSprite]) {
+                setSprite(savedSprite);
+                document.querySelectorAll('.sprite-option').forEach(option => {
+                    if (option.getAttribute('data-sprite') === savedSprite) {
                         option.classList.add('active');
                     } else {
                         option.classList.remove('active');
@@ -501,16 +583,43 @@
 
         // Сохранение настроек
         function saveSettings() {
-            localStorage.setItem('breathingAppColor', currentColor);
+            localStorage.setItem('breathingAppHue', currentHue);
+            localStorage.setItem('breathingAppSprite', currentSprite);
             localStorage.setItem('breathingAppMusic', musicToggle.checked);
             localStorage.setItem('breathingAppMode', currentMode);
         }
 
-        // Установка цвета круга
-        function setCircleColor(color) {
-            currentColor = color;
-            breathingCircle.style.borderColor = color;
-            // breathingCircle.style.boxShadow = `0 0 30px ${color}80`;
+                // Установка спрайта
+                function setSprite(sprite) {
+                    currentSprite = sprite;
+                    const spriteFile = sprites[sprite];
+
+                    // Обновляем основной круг
+                    breathingCircle.style.backgroundImage = `url('${spriteFile}')`;
+
+                    // Обновляем иконки в палитре цветов
+                    document.querySelectorAll('.color-option').forEach(option => {
+                        option.style.backgroundImage = `url('${spriteFile}')`;
+                    });
+
+                    // Применяем текущий hue-фильтр
+                    breathingCircle.style.filter = `hue-rotate(${currentHue}deg)`;
+
+                    saveSettings();
+                }
+
+        // Установка hue-фильтра и цвета интерфейса
+        function setSpriteHue(hue) {
+            currentHue = hue;
+            
+            // Применяем фильтр к кругу
+            breathingCircle.style.filter = `hue-rotate(${hue}deg)`;
+            
+            // Обновляем CSS переменные для цвета интерфейса
+            const primaryColor = hueColors[hue] || '#c3561b';
+            document.documentElement.style.setProperty('--primary-color', primaryColor);
+            
+            // Сохраняем настройки
             saveSettings();
         }
 
@@ -537,8 +646,6 @@
 
         // Обновление таймера
         function updateTimer() {
-            //timerElement.textContent = formatTime(timeLeft);
-
             if (timeLeft <= 0) {
                 // Переход к следующей фазе
                 const mode = modes[currentMode];
@@ -648,7 +755,6 @@
             isPlaying = false;
             currentPhase = 'pause';
             timeLeft = 0;
-            //timerElement.textContent = formatTime(timeLeft);
             hintElement.textContent = 'Готовы начать?';
             breathingCircle.className = 'breathing-circle pause';
             playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
@@ -675,6 +781,18 @@
             // Обработчик для клика по кругу
             breathingCircle.addEventListener('click', toggleTimer);
 
+            // Обработчики для выбора спрайта
+            spriteSelector.querySelectorAll('.sprite-option').forEach(option => {
+                option.addEventListener('click', function () {
+                    document.querySelectorAll('.sprite-option').forEach(opt => {
+                        opt.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    const sprite = this.getAttribute('data-sprite');
+                    setSprite(sprite);
+                });
+            });
+
             // Обработчики для выбора цвета
             colorPalette.querySelectorAll('.color-option').forEach(option => {
                 option.addEventListener('click', function () {
@@ -682,7 +800,8 @@
                         opt.classList.remove('active');
                     });
                     this.classList.add('active');
-                    setCircleColor(this.getAttribute('data-color'));
+                    const hue = parseInt(this.getAttribute('data-hue'));
+                    setSpriteHue(hue);
                 });
             });
 
