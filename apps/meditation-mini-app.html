@@ -322,7 +322,7 @@
         .breathing-circle.breathe-out-6s {
             animation: breatheOut 6s ease-in-out forwards;
         }
-        
+
         .breathing-circle.breathe-out-8s {
             animation: breatheOut 8s ease-in-out forwards;
         }
@@ -456,13 +456,19 @@
             <div class="settings-panel" id="settingsPanel">
                 <div class="settings-label">Изображение</div>
                 <div class="sprite-selector" id="spriteSelector">
-                    <div class="sprite-option active" data-sprite="fire" style="background-image: url('breathing-circle-fire.png')">
+                    <div class="sprite-option active" data-sprite="fire"
+                        style="background-image: url('breathing-circle-fire.png')">
                     </div>
-                    <div class="sprite-option" data-sprite="water" style="background-image: url('breathing-circle-water.png')"></div>
-                    <div class="sprite-option" data-sprite="earth" style="background-image: url('breathing-circle-flower.png')"></div>
-                    <div class="sprite-option" data-sprite="air" style="background-image: url('breathing-circle-calm.png')"></div>
-                    <div class="sprite-option" data-sprite="light" style="background-image: url('breathing-circle-heart.png')"></div>
-                    <div class="sprite-option" data-sprite="dark" style="background-image: url('breathing-circle-enalion.png')"></div>
+                    <div class="sprite-option" data-sprite="water"
+                        style="background-image: url('breathing-circle-water.png')"></div>
+                    <div class="sprite-option" data-sprite="flower"
+                        style="background-image: url('breathing-circle-flower.png')"></div>
+                    <div class="sprite-option" data-sprite="calm"
+                        style="background-image: url('breathing-circle-calm.png')"></div>
+                    <div class="sprite-option" data-sprite="heart"
+                        style="background-image: url('breathing-circle-heart.png')"></div>
+                    <div class="sprite-option" data-sprite="enalion"
+                        style="background-image: url('breathing-circle-enalion.png')"></div>
                 </div>
 
                 <div class="settings-label">Цвет</div>
@@ -495,7 +501,7 @@
     </audio>
 
     <script>
-                            // v1.5.0 - Дыхательное приложение с исправлениями для режима баланса
+        // v1.5.0 - Дыхательное приложение с исправлениями для режима баланса
 
         // Элементы DOM
         const breathingCircle = document.getElementById('breathingCircle');
@@ -503,16 +509,16 @@
         const subHintElement = document.getElementById('subHint');
         const playPauseBtn = document.getElementById('playPauseBtn');
         const stopBtn = document.getElementById('stopBtn');
-                            const spriteSelector = document.getElementById('spriteSelector');
-                            const colorPalette = document.getElementById('colorPalette');
+        const spriteSelector = document.getElementById('spriteSelector');
+        const colorPalette = document.getElementById('colorPalette');
         const musicToggle = document.getElementById('musicToggle');
         const backgroundMusic = document.getElementById('backgroundMusic');
         const modeSelector = document.getElementById('modeSelector');
         const settingsToggle = document.getElementById('settingsToggle');
         const settingsPanel = document.getElementById('settingsPanel');
-                            const balanceIndicators = document.getElementById('balanceIndicators');
-                            const leftIndicator = document.getElementById('leftIndicator');
-                            const rightIndicator = document.getElementById('rightIndicator');
+        const balanceIndicators = document.getElementById('balanceIndicators');
+        const leftIndicator = document.getElementById('leftIndicator');
+        const rightIndicator = document.getElementById('rightIndicator');
 
         // Состояние приложения
         let isPlaying = false;
@@ -520,7 +526,7 @@
         let timeLeft = 0;
         let timerInterval = null;
         let currentHue = 0;
-                            let currentSprite = 'fire';
+        let currentSprite = 'fire';
         let currentMode = 'relaxation';
         let balanceSide = 'left';
         let animationTimer = null;
@@ -535,15 +541,15 @@
             300: '#ff6bcf'  // Розовый
         };
 
-                    // Спрайты (все используют одну картинку, но можно заменить на разные)
-                    const sprites = {
-                        fire: 'breathing-circle-fire.png',
-                        water: 'breathing-circle-water.png',
-                        earth: 'breathing-circle-flower.png',
-                        air: 'breathing-circle-calm.png',
-                        light: 'breathing-circle-heart.png',
-                        dark: 'breathing-circle-enalion.png'
-                    };
+        // Спрайты
+        const sprites = {
+            fire: 'breathing-circle-fire.png',
+            water: 'breathing-circle-water.png',
+            flower: 'breathing-circle-flower.png',
+            calm: 'breathing-circle-calm.png',
+            heart: 'breathing-circle-heart.png',
+            enalion: 'breathing-circle-enalion.png'
+        };
 
         // Режимы дыхания
         const modes = {
@@ -570,6 +576,9 @@
                 name: 'Баланс',
                 phases: [
                     { name: 'breathe-in', duration: 4, hint: 'Вдох', subHint: 'Левая ноздря' },
+                    { name: 'breathe-out-4s', duration: 4, hint: 'Выдох', subHint: 'Левая ноздря' },
+                    { name: 'switch', duration: 2, hint: 'Сменить сторону', subHint: '' },
+                    { name: 'breathe-in', duration: 4, hint: 'Вдох', subHint: 'Правая ноздря' },
                     { name: 'breathe-out-4s', duration: 4, hint: 'Выдох', subHint: 'Правая ноздря' },
                     { name: 'switch', duration: 2, hint: 'Сменить сторону', subHint: '' }
                 ],
@@ -631,24 +640,27 @@
             localStorage.setItem('breathingAppMode', currentMode);
         }
 
-                // Установка спрайта
-                function setSprite(sprite) {
-                    currentSprite = sprite;
-                    const spriteFile = sprites[sprite];
+        // Установка спрайта
+        function setSprite(sprite) {
+            currentSprite = sprite;
+            const spriteFile = sprites[sprite];
+            console.log(currentSprite);
+            console.log(spriteFile);
+            
 
-                    // Обновляем основной круг
-                    breathingCircle.style.backgroundImage = `url('${spriteFile}')`;
+            // Обновляем основной круг
+            breathingCircle.style.backgroundImage = `url('${spriteFile}')`;
 
-                    // Обновляем иконки в палитре цветов
-                    document.querySelectorAll('.color-option').forEach(option => {
-                        option.style.backgroundImage = `url('${spriteFile}')`;
-                    });
+            // Обновляем иконки в палитре цветов
+            document.querySelectorAll('.color-option').forEach(option => {
+                option.style.backgroundImage = `url('${spriteFile}')`;
+            });
 
-                    // Применяем текущий hue-фильтр
-                    breathingCircle.style.filter = `hue-rotate(${currentHue}deg)`;
+            // Применяем текущий hue-фильтр
+            breathingCircle.style.filter = `hue-rotate(${currentHue}deg)`;
 
-                    saveSettings();
-                }
+            saveSettings();
+        }
 
         // Установка hue-фильтра и цвета интерфейса
         function setSpriteHue(hue) {
@@ -673,37 +685,33 @@
             saveSettings();
         }
 
-                            // Обновление видимости элементов в зависимости от режима
-                            function updateModeVisibility() {
-                                if (currentMode === 'balance') {
-                                    balanceIndicators.style.display = 'flex';
-                                    subHintElement.style.display = 'block';
-                                } else {
-                                    balanceIndicators.style.display = 'none';
-                                    subHintElement.style.display = 'none';
-                                }
-                            }
+        // Обновление видимости элементов в зависимости от режима
+        function updateModeVisibility() {
+            if (currentMode === 'balance') {
+                balanceIndicators.style.display = 'flex';
+                subHintElement.style.display = 'block';
+            } else {
+                balanceIndicators.style.display = 'none';
+                subHintElement.style.display = 'none';
+            }
+        }
 
-                            // Обновление индикаторов для режима баланса
-                            function updateBalanceIndicators() {
-                                if (currentMode !== 'balance') return;
+        // Обновление индикаторов для режима баланса
+        function updateBalanceIndicators() {
+            if (currentMode !== 'balance') return;
 
-                            leftIndicator.classList.remove('active');
-                            rightIndicator.classList.remove('active');
+            leftIndicator.classList.remove('active');
+            rightIndicator.classList.remove('active');
 
-                            if (currentPhase === 'breathe-in') {
-                                if (balanceSide === 'left') {
-                                    leftIndicator.classList.add('active');
-                                } else {
-                                    rightIndicator.classList.add('active');
-                                }
-                        } else if (currentPhase.startsWith('breathe-out')) {
-                            if (balanceSide === 'left') {
-                                rightIndicator.classList.add('active');
-                            } else {
-                                leftIndicator.classList.add('active');
-                            }
-                        }
+            // Если процесс остановлен - индикаторы не активны
+            if (!isPlaying) return;
+
+            // Если процесс идет, показываем активную сторону
+            if (balanceSide === 'left') {
+                leftIndicator.classList.add('active');
+            } else {
+                rightIndicator.classList.add('active');
+            }
         }
 
         // Форматирование времени в ММ:СС
@@ -729,17 +737,15 @@
 
                 // Особые действия для режима баланса
                 if (currentMode === 'balance') {
-                    if (currentPhase === 'breathe-in') {
+                    if (currentPhase === 'switch') {
+                        // На фазе смены сторон переключаем balanceSide
                         balanceSide = balanceSide === 'left' ? 'right' : 'left';
                         subHintElement.textContent = balanceSide === 'left' ? 'Левая ноздря' : 'Правая ноздря';
-                    } else if (currentPhase.startsWith('breathe-out')) {
-                        subHintElement.textContent = balanceSide === 'left' ? 'Правая ноздря' : 'Левая ноздря';
-                    } else if (currentPhase === 'switch') {
-                        subHintElement.textContent = '';
+                        // subHintElement.textContent = '';
+                        // Обновляем индикаторы только при смене стороны
+                        updateBalanceIndicators();
                     }
-                    updateBalanceIndicators();
-                } else {
-                    subHintElement.textContent = nextPhase.subHint;
+                    // Для фаз вдоха и выдоха индикаторы не меняем
                 }
 
                 // Применяем анимацию
@@ -798,6 +804,11 @@
                 clearInterval(timerInterval);
                 playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
                 breathingCircle.style.animationPlayState = 'paused';
+                isPlaying = false;
+                // Обновляем индикаторы при остановке
+                if (currentMode === 'balance') {
+                    updateBalanceIndicators();
+                }
             } else {
                 // Запуск
                 const mode = modes[currentMode];
@@ -810,6 +821,7 @@
                     if (currentMode === 'balance') {
                         balanceSide = 'left';
                         subHintElement.textContent = 'Левая ноздря';
+                        // Обновляем индикаторы при старте
                         updateBalanceIndicators();
                     } else {
                         subHintElement.textContent = mode.phases[0].subHint;
@@ -821,9 +833,13 @@
                 timerInterval = setInterval(updateTimer, 1000);
                 playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
                 breathingCircle.style.animationPlayState = 'running';
-            }
+                isPlaying = true;
 
-            isPlaying = !isPlaying;
+                // Обновляем индикаторы при запуске
+                if (currentMode === 'balance') {
+                    updateBalanceIndicators();
+                }
+            }
         }
 
         // Сброс таймера
@@ -840,10 +856,9 @@
             playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
 
             if (currentMode === 'balance') {
+                balanceSide = 'left'; // Старт с левой стороны
                 subHintElement.textContent = 'Левая ноздря';
                 updateBalanceIndicators();
-            } else {
-                subHintElement.textContent = '';
             }
 
             updateModeVisibility();
