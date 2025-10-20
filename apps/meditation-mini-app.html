@@ -896,7 +896,7 @@
                 if (currentPhase === 'pause' && timeLeft === 0) {
                     // Начинаем с первой фазы
                     currentPhase = mode.phases[0].name;
-                    timeLeft = mode.phases[0].duration;
+                    timeLeft = mode.phases[0].duration-1;
                     hintElement.textContent = mode.phases[0].hint;
 
                     if (currentMode === 'balance') {
