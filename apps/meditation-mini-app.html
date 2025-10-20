@@ -35,11 +35,20 @@
 
         .container {
             width: 100%;
+            height: 100vh;
             max-width: 400px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: space-around;
+        }
+
+        .inner-container {
+            display: inherit;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-around;
+            width: 100%;
         }
 
         .mode-selector {
@@ -102,7 +111,7 @@
         .sub-hint {
             font-size: 1rem;
             color: #aaa;
-            margin-bottom: 25px;
+            margin: 0 1.5vh 25px 1.5vh;
             min-height: 20px;
             text-align: center;
         }
@@ -133,6 +142,14 @@
             background-color: #2a2a2a;
         }
 
+        .control-btn.music-muted {
+            /* opacity: 0.6; */
+        }
+
+        .control-btn.music-muted:hover {
+            /* opacity: 0.8; */
+        }
+
         .settings {
             display: flex;
             flex-direction: column;
@@ -152,6 +169,10 @@
 
         .settings-panel.active {
             display: block;
+        }
+
+        .fas .fa-play {
+            margin-left: 3px;
         }
 
         .settings-toggle {
@@ -289,7 +310,7 @@
         .balance-indicators {
             display: flex;
             justify-content: space-between;
-            width: 80%;
+            width: 100% !important;
             height: 3vh;
             margin: 1vh 0;
         }
@@ -306,13 +327,17 @@
             background-color: var(--btn-border-color);
         }
 
+        .rotation {
+            animation: rotate 120s linear infinite;
+        }
+
         /* Анимации для дыхания */
         .breathing-circle.breathe-in {
             animation: breatheIn 4s ease-in-out forwards;
         }
 
         .breathing-circle.hold {
-            transform: scale(1.9);
+            transform: scale(2);
         }
 
         .breathing-circle.breathe-out-4s {
@@ -337,13 +362,13 @@
             }
 
             100% {
-                transform: scale(1.9);
+                transform: scale(2);
             }
         }
 
         @keyframes breatheOut {
             0% {
-                transform: scale(1.9);
+                transform: scale(2);
             }
 
             100% {
@@ -351,14 +376,20 @@
             }
         }
 
+        @keyframes rotate {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(-720deg);
+            }
+        }
+
         /* Адаптивность */
         @media (max-width: 768px) {
             .mode-selector {
                 margin-bottom: 1vh;
-            }
-
-            .container {
-                max-width: 100%;
             }
 
             .breathing-circle {
@@ -403,7 +434,7 @@
             .control-btn {
                 width: 50px;
                 height: 50px;
-                font-size: 1.3rem;
+                /* font-size: 1.3rem; */
             }
 
             .mode-btn {
@@ -415,6 +446,16 @@
             .color-option {
                 width: 28px;
                 height: 28px;
+            }
+
+            .container {
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 330px) {
+            .balance-indicators {
+                width: 100%;
             }
         }
     </style>
@@ -428,68 +469,76 @@
             <button class="mode-btn" data-mode="balance">Баланс</button>
         </div>
 
-        <div class="breathing-circle" id="breathingCircle">
+        <div class="rotation">
+            <div class="breathing-circle" id="breathingCircle"></div>
             <!--div class="timer" id="timer">04:00</div-->
         </div>
-        <div class="balance-indicators" id="balanceIndicators">
-            <div class="balance-indicator left" id="leftIndicator"></div>
-            <div style="display:none" class="sub-hint" id="subHint"></div>
-            <div class="balance-indicator right" id="rightIndicator"></div>
-        </div>
-        <div class="hint" id="hint">Готовы начать?</div>
-
-        <div class="controls">
-            <button class="control-btn" id="playPauseBtn">
-                <i class="fas fa-play"></i>
-            </button>
-            <button class="control-btn" id="stopBtn">
-                <i class="fas fa-stop"></i>
-            </button>
-        </div>
-
-        <div class="settings">
-            <div class="settings-toggle" id="settingsToggle">
-                <i class="fas fa-cog"></i>
-                <span style="margin-left: 10px;">Настройки</span>
+        <div class="inner-container">
+            <div class="balance-indicators" id="balanceIndicators">
+                <div class="balance-indicator left" id="leftIndicator"></div>
+                <div style="display:none" class="sub-hint" id="subHint"></div>
+                <div class="balance-indicator right" id="rightIndicator"></div>
             </div>
+            <div class="hint" id="hint">Готовы начать?</div>
 
-            <div class="settings-panel" id="settingsPanel">
-                <div class="settings-label">Изображение</div>
-                <div class="sprite-selector" id="spriteSelector">
-                    <div class="sprite-option active" data-sprite="fire"
-                        style="background-image: url('breathing-circle-fire.png')">
-                    </div>
-                    <div class="sprite-option" data-sprite="water"
-                        style="background-image: url('breathing-circle-water.png')"></div>
-                    <div class="sprite-option" data-sprite="flower"
-                        style="background-image: url('breathing-circle-flower.png')"></div>
-                    <div class="sprite-option" data-sprite="calm"
-                        style="background-image: url('breathing-circle-calm.png')"></div>
-                    <div class="sprite-option" data-sprite="heart"
-                        style="background-image: url('breathing-circle-heart.png')"></div>
-                    <div class="sprite-option" data-sprite="enalion"
-                        style="background-image: url('breathing-circle-enalion.png')"></div>
-                </div>
+            <div class="controls">
+                <button class="control-btn" id="settingsToggle">
+                    <i class="fas fa-cog"></i>
+                </button>
+                <button class="control-btn" id="playPauseBtn">
+                    <i class="fas fa-play"></i>
+                </button>
+                <button class="control-btn" id="stopBtn">
+                    <i class="fas fa-stop"></i>
+                </button>
+                <button class="control-btn" id="musicToggleBtn">
+                    <i class="fas fa-music"></i>
+                </button>
 
-                <div class="settings-label">Цвет</div>
-                <div class="color-palette" id="colorPalette">
-                    <div class="color-option active" data-hue="0" style="filter: hue-rotate(0deg)"></div>
-                    <div class="color-option" data-hue="60" style="filter: hue-rotate(60deg)"></div>
-                    <div class="color-option" data-hue="120" style="filter: hue-rotate(120deg)"></div>
-                    <div class="color-option" data-hue="180" style="filter: hue-rotate(180deg)"></div>
-                    <div class="color-option" data-hue="240" style="filter: hue-rotate(240deg)"></div>
-                    <div class="color-option" data-hue="300" style="filter: hue-rotate(300deg)"></div>
-                </div>
-
-                <div class="music-toggle">
+                <!-- <div class="music-toggle">
                     <div class="toggle-label">
-                        <i class="fas fa-music"></i>
                         <span>Фоновая музыка</span>
                     </div>
                     <label class="switch">
                         <input type="checkbox" id="musicToggle">
                         <span class="slider"></span>
                     </label>
+                </div> -->
+            </div>
+
+            <div class="settings">
+                <!-- <div class="settings-toggle" id="settingsToggle">
+                    <span style="margin-left: 10px;">Настройки</span>
+                </div> -->
+
+                <div class="settings-panel" id="settingsPanel">
+                    <div class="settings-label" style="display: none;">Изображение</div>
+                    <div class="sprite-selector" style="display: none;" id="spriteSelector">
+                        <div class="sprite-option active" data-sprite="fire"
+                            style="background-image: url('breathing-circle-fire.png')">
+                        </div>
+                        <div class="sprite-option" data-sprite="water"
+                            style="background-image: url('breathing-circle-water.png')"></div>
+                        <div class="sprite-option" data-sprite="flower"
+                            style="background-image: url('breathing-circle-flower.png')"></div>
+                        <div class="sprite-option" data-sprite="calm"
+                            style="background-image: url('breathing-circle-calm.png')"></div>
+                        <div class="sprite-option" data-sprite="heart"
+                            style="background-image: url('breathing-circle-heart.png')"></div>
+                        <div class="sprite-option" data-sprite="enalion"
+                            style="background-image: url('breathing-circle-enalion.png')">
+                        </div>
+                    </div>
+
+                    <div class="settings-label">Цвет</div>
+                    <div class="color-palette" id="colorPalette">
+                        <div class="color-option active" data-hue="0" style="filter: hue-rotate(0deg)"></div>
+                        <div class="color-option" data-hue="60" style="filter: hue-rotate(60deg)"></div>
+                        <div class="color-option" data-hue="120" style="filter: hue-rotate(120deg)"></div>
+                        <div class="color-option" data-hue="180" style="filter: hue-rotate(180deg)"></div>
+                        <div class="color-option" data-hue="240" style="filter: hue-rotate(240deg)"></div>
+                        <div class="color-option" data-hue="300" style="filter: hue-rotate(300deg)"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -511,7 +560,7 @@
         const stopBtn = document.getElementById('stopBtn');
         const spriteSelector = document.getElementById('spriteSelector');
         const colorPalette = document.getElementById('colorPalette');
-        const musicToggle = document.getElementById('musicToggle');
+        const musicToggleBtn = document.getElementById('musicToggleBtn');
         const backgroundMusic = document.getElementById('backgroundMusic');
         const modeSelector = document.getElementById('modeSelector');
         const settingsToggle = document.getElementById('settingsToggle');
@@ -522,6 +571,7 @@
 
         // Состояние приложения
         let isPlaying = false;
+        let isMusicEnabled = false;
         let currentPhase = 'pause';
         let timeLeft = 0;
         let timerInterval = null;
@@ -575,11 +625,11 @@
             balance: {
                 name: 'Баланс',
                 phases: [
-                    { name: 'breathe-in', duration: 4, hint: 'Вдох', subHint: 'Левая ноздря' },
-                    { name: 'breathe-out-4s', duration: 4, hint: 'Выдох', subHint: 'Левая ноздря' },
+                    { name: 'breathe-in', duration: 4, hint: 'Вдох', subHint: 'Дышим левой ноздрей' },
+                    { name: 'breathe-out-4s', duration: 4, hint: 'Выдох', subHint: 'Дышим левой ноздрей' },
                     { name: 'switch', duration: 2, hint: 'Сменить сторону', subHint: '' },
-                    { name: 'breathe-in', duration: 4, hint: 'Вдох', subHint: 'Правая ноздря' },
-                    { name: 'breathe-out-4s', duration: 4, hint: 'Выдох', subHint: 'Правая ноздря' },
+                    { name: 'breathe-in', duration: 4, hint: 'Вдох', subHint: 'Дышим правой ноздрей' },
+                    { name: 'breathe-out-4s', duration: 4, hint: 'Выдох', subHint: 'Дышим правой ноздрей' },
                     { name: 'switch', duration: 2, hint: 'Сменить сторону', subHint: '' }
                 ],
                 description: 'Попеременное дыхание для гармонии'
@@ -616,8 +666,19 @@
             }
 
             if (savedMusic === 'true') {
-                musicToggle.checked = true;
-                backgroundMusic.play().catch(e => console.log("Автовоспроизведение заблокировано"));
+                isMusicEnabled = true;
+                musicToggleBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+                musicToggleBtn.classList.remove('music-muted');
+                backgroundMusic.play().catch(e => {
+                    isMusicEnabled = false;
+                    musicToggleBtn.innerHTML = '<i class="fas fa-music"></i>';
+                    musicToggleBtn.classList.add('music-muted');
+                    console.log("Автовоспроизведение заблокировано");
+                });
+            } else {
+                isMusicEnabled = false;
+                musicToggleBtn.innerHTML = '<i class="fas fa-music"></i>';
+                musicToggleBtn.classList.add('music-muted');
             }
 
             if (savedMode && modes[savedMode]) {
@@ -632,13 +693,15 @@
             }
         }
 
+
         // Сохранение настроек
         function saveSettings() {
             localStorage.setItem('breathingAppHue', currentHue);
             localStorage.setItem('breathingAppSprite', currentSprite);
-            localStorage.setItem('breathingAppMusic', musicToggle.checked);
+            localStorage.setItem('breathingAppMusic', isMusicEnabled);
             localStorage.setItem('breathingAppMode', currentMode);
         }
+
 
         // Установка спрайта
         function setSprite(sprite) {
@@ -646,7 +709,7 @@
             const spriteFile = sprites[sprite];
             console.log(currentSprite);
             console.log(spriteFile);
-            
+
 
             // Обновляем основной круг
             breathingCircle.style.backgroundImage = `url('${spriteFile}')`;
@@ -740,7 +803,7 @@
                     if (currentPhase === 'switch') {
                         // На фазе смены сторон переключаем balanceSide
                         balanceSide = balanceSide === 'left' ? 'right' : 'left';
-                        subHintElement.textContent = balanceSide === 'left' ? 'Левая ноздря' : 'Правая ноздря';
+                        subHintElement.textContent = balanceSide === 'left' ? 'Дышим левой ноздрей' : 'Дышим правой ноздрей';
                         // subHintElement.textContent = '';
                         // Обновляем индикаторы только при смене стороны
                         updateBalanceIndicators();
@@ -797,6 +860,24 @@
             }
         }
 
+        function toggleMusic() {
+            isMusicEnabled = !isMusicEnabled;
+
+            if (isMusicEnabled) {
+                backgroundMusic.play().catch(e => console.log("Автовоспроизведение заблокировано"));
+                musicToggleBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+                musicToggleBtn.classList.remove('music-muted');
+            } else {
+                backgroundMusic.pause();
+                musicToggleBtn.innerHTML = '<i class="fas fa-music"></i>';
+                musicToggleBtn.classList.add('music-muted');
+            }
+
+            // Сохраняем настройки
+            localStorage.setItem('breathingAppMusic', isMusicEnabled);
+        }
+
+
         // Запуск/остановка таймера
         function toggleTimer() {
             if (isPlaying) {
@@ -820,7 +901,7 @@
 
                     if (currentMode === 'balance') {
                         balanceSide = 'left';
-                        subHintElement.textContent = 'Левая ноздря';
+                        subHintElement.textContent = 'Дышим левой ноздрей';
                         // Обновляем индикаторы при старте
                         updateBalanceIndicators();
                     } else {
@@ -857,7 +938,7 @@
 
             if (currentMode === 'balance') {
                 balanceSide = 'left'; // Старт с левой стороны
-                subHintElement.textContent = 'Левая ноздря';
+                subHintElement.textContent = 'Дышим левой ноздрей';
                 updateBalanceIndicators();
             }
 
@@ -880,6 +961,7 @@
             // Обработчики событий
             playPauseBtn.addEventListener('click', toggleTimer);
             stopBtn.addEventListener('click', resetTimer);
+            musicToggleBtn.addEventListener('click', toggleMusic);
 
             // Обработчик для клика по кругу
             breathingCircle.addEventListener('click', toggleTimer);
@@ -920,7 +1002,7 @@
             });
 
             // Обработчик для переключателя музыки
-            musicToggle.addEventListener('change', function () {
+            musicToggleBtn.addEventListener('change', function () {
                 if (this.checked) {
                     backgroundMusic.play().catch(e => console.log("Автовоспроизведение заблокировано"));
                 } else {
